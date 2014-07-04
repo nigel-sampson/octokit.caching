@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Octokit.Caching</id>
+    <version>1.0.0</version>
+    <authors>Nigel Sampson</authors>
+    <owners>Nigel Sampson</owners>
+    <licenseUrl>https://github.com/nigel-sampson/octokit.caching/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/nigel-sampson/octokit.caching</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A caching HttpClient for Octokit that respects etags.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>Octokit, GitHub, Caching</tags>
+
+    <dependencies>
+      <dependency id="Microsoft.Bcl" version="1.1.9" />
+      <dependency id="Microsoft.Bcl.Build" version="1.0.14" />
+      <dependency id="Microsoft.Net.Http" version="2.2.22" />
+      <dependency id="Octokit" version="0.3.5" />
+    </dependencies>
+
+  </metadata>
+
+  <files>
+    <file src="..\..\Octokit.Caching\bin\Release\Octokit.Caching.dll" target="lib\portable-net45+win\Ocotokit.Caching.dll" />
+  </files>
+</package>
