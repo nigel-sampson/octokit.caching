@@ -98,7 +98,7 @@ namespace Octokit.Caching.Tests
 
             httpClient.Received().Send<string>(request, CancellationToken.None).IgnoreAwait();
 
-            Assert.AreEqual("\"ABC123\"", request.Headers["If-None-Match"]);
+            Assert.AreEqual("ABC123", request.Headers["If-None-Match"]);
         }
 
         [TestMethod]

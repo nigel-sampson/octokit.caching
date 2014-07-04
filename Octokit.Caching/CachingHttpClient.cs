@@ -38,7 +38,7 @@ namespace Octokit.Caching
 
             if (!String.IsNullOrEmpty(response.ApiInfo.Etag))
             {
-                request.Headers["If-None-Match"] = String.Format("\"{0}\"", response.ApiInfo.Etag);
+                request.Headers["If-None-Match"] = String.Format("{0}", response.ApiInfo.Etag);
 
                 var conditionalResponse = await httpClient.Send<T>(request, cancellationToken);
 
