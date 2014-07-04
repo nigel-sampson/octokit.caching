@@ -46,6 +46,8 @@ namespace Octokit.Caching
                     return response;
 
                 cache.Set(key, conditionalResponse);
+
+                return conditionalResponse;
             }
 
             response = await httpClient.Send<T>(request, cancellationToken);

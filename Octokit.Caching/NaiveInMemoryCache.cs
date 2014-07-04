@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace Octokit.Caching
 {
     public class NaiveInMemoryCache : ICache
     {
-        private IDictionary<string, object> items = new Dictionary<string, object>();
+        private ConcurrentDictionary<string, object> items = new ConcurrentDictionary<string, object>();
 
         public T Get<T>(string key)
         {
-            return items.ContainsKey(key) ? (T) items[key] : default (T);
+            object value;
+
+            return items.TryGetValue(key, out value) ? (T) value : default (T);
         }
 
         public void Set<T>(string key, T value)

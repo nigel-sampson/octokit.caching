@@ -39,7 +39,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CachingHttpClientAdapter.cs" />
+    <Compile Include="CachingHttpClient.cs" />
     <Compile Include="ICache.cs" />
     <Compile Include="NaiveInMemoryCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
