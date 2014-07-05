@@ -30,5 +30,19 @@ namespace Octokit.Caching.Tests
 
             Assert.AreEqual("test", stringValue);
         }
+
+        [TestMethod]
+        public async Task ClearRemovesValues()
+        {
+            var cache = new NaiveInMemoryCache();
+
+            await cache.SetAsync("string", "test");
+
+            await cache.ClearAsync();
+
+            var stringValue = await cache.GetAsync<string>("string");
+
+            Assert.IsNull(stringValue);
+        }
     }
 }

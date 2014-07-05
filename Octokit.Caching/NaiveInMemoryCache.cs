@@ -21,5 +21,12 @@ namespace Octokit.Caching
 
             return Task.FromResult(true);
         }
+
+        public Task ClearAsync()
+        {
+            items.Clear();
+
+            return Task.FromResult(true);
+        }
     }
 }
