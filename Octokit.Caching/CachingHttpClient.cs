@@ -25,13 +25,13 @@ namespace Octokit.Caching
 
             var key = request.Endpoint.ToString();
 
-            var response = cache.Get<IResponse<T>>(key);
+            var response = await cache.GetAsync<IResponse<T>>(key);
 
             if (response == null)
             {
                 response = await httpClient.Send<T>(request, cancellationToken);
 
-                cache.Set(key, response);
+                await cache.SetAsync(key, response);
 
                 return response;
             }
@@ -45,14 +45,14 @@ namespace Octokit.Caching
                 if (conditionalResponse.StatusCode == HttpStatusCode.NotModified)
                     return response;
 
-                cache.Set(key, conditionalResponse);
+                await cache.SetAsync(key, conditionalResponse);
 
                 return conditionalResponse;
             }
 
             response = await httpClient.Send<T>(request, cancellationToken);
 
-            cache.Set(key, response);
+            await cache.SetAsync(key, response);
 
             return response;
         }

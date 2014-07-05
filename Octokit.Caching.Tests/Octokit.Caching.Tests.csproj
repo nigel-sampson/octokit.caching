@@ -64,14 +64,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Octokit.Caching\Octokit.Caching.csproj">
-      <Project>{42849180-a318-4a31-b648-9a89e20b13fb}</Project>
-      <Name>Octokit.Caching</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Octokit.Caching\Octokit.Caching.csproj">
+      <Project>{ab34c4b7-dac5-49af-b326-65abc2b7e824}</Project>
+      <Name>Octokit.Caching</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

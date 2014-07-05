@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Octokit.Caching.Tests
@@ -7,25 +8,25 @@ namespace Octokit.Caching.Tests
     public class NaiveInMemoryCacheTests
     {
         [TestMethod]
-        public void GetReturnsDefaultWhenMissing()
+        public async Task GetReturnsDefaultWhenMissing()
         {
             var cache = new NaiveInMemoryCache();
 
-            var stringValue = cache.Get<string>("string");
-            var intValue = cache.Get<int>("int");
+            var stringValue = await cache.GetAsync<string>("string");
+            var intValue = await cache.GetAsync<int>("int");
 
             Assert.IsNull(stringValue);
             Assert.AreEqual(0, intValue);
         }
 
         [TestMethod]
-        public void SetStoresValue()
+        public async Task SetStoresValue()
         {
             var cache = new NaiveInMemoryCache();
 
-            cache.Set("string", "test");
+            await cache.SetAsync("string", "test");
 
-            var stringValue = cache.Get<string>("string");
+            var stringValue = await cache.GetAsync<string>("string");
 
             Assert.AreEqual("test", stringValue);
         }

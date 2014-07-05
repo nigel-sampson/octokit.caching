@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -28,7 +26,7 @@ namespace Octokit.Caching.Tests
             await cachingClient.Send<string>(request, CancellationToken.None);
 
             httpClient.Received().Send<string>(request, CancellationToken.None).IgnoreAwait();
-            cache.DidNotReceive().Get<string>("test");
+            cache.DidNotReceive().GetAsync<string>("test").IgnoreAwait();
         }
 
         [TestMethod]
@@ -44,11 +42,11 @@ namespace Octokit.Caching.Tests
             var response = Substitute.For<IResponse<string>>();
             httpClient.Send<string>(request, CancellationToken.None).Returns(Task.FromResult(response));
 
-            cache.Get<IResponse<string>>("test").Returns((IResponse<string>)null);
+            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult((IResponse<string>)null));
 
             var actualReponse = await cachingClient.Send<string>(request, CancellationToken.None);
 
-            cache.Received().Set("test", response);
+            cache.Received().SetAsync("test", response).IgnoreAwait();
 
             Assert.AreEqual(response, actualReponse);
         }
@@ -66,7 +64,7 @@ namespace Octokit.Caching.Tests
             var cachedResponse = Substitute.For<IResponse<string>>();
             cachedResponse.ApiInfo.Returns(new ApiInfo(new Dictionary<string, Uri>(), new List<string>(), new List<string>(), String.Empty, null));
 
-            cache.Get<IResponse<string>>("test").Returns(cachedResponse);
+            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult(cachedResponse));
 
             var response = Substitute.For<IResponse<string>>();
 
@@ -74,7 +72,7 @@ namespace Octokit.Caching.Tests
 
             var actualReponse = await cachingClient.Send<string>(request, CancellationToken.None);
 
-            cache.Received().Set("test", response);
+            cache.Received().SetAsync("test", response).IgnoreAwait();
 
             Assert.AreEqual(response, actualReponse);
         }
@@ -92,7 +90,7 @@ namespace Octokit.Caching.Tests
             var cachedResponse = Substitute.For<IResponse<string>>();
             cachedResponse.ApiInfo.Returns(new ApiInfo(new Dictionary<string, Uri>(), new List<string>(), new List<string>(), "ABC123", null));
 
-            cache.Get<IResponse<string>>("test").Returns(cachedResponse);
+            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult(cachedResponse));
 
             await cachingClient.Send<string>(request, CancellationToken.None);
 
@@ -114,7 +112,7 @@ namespace Octokit.Caching.Tests
             var cachedResponse = Substitute.For<IResponse<string>>();
             cachedResponse.ApiInfo.Returns(new ApiInfo(new Dictionary<string, Uri>(), new List<string>(), new List<string>(), "ABC123", null));
 
-            cache.Get<IResponse<string>>("test").Returns(cachedResponse);
+            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult(cachedResponse));
 
             var conditionalResponse = Substitute.For<IResponse<string>>();
             conditionalResponse.StatusCode = HttpStatusCode.NotModified;
@@ -139,7 +137,7 @@ namespace Octokit.Caching.Tests
             var cachedResponse = Substitute.For<IResponse<string>>();
             cachedResponse.ApiInfo.Returns(new ApiInfo(new Dictionary<string, Uri>(), new List<string>(), new List<string>(), "ABC123", null));
 
-            cache.Get<IResponse<string>>("test").Returns(cachedResponse);
+            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult(cachedResponse));
 
             var conditionalResponse = Substitute.For<IResponse<string>>();
             conditionalResponse.StatusCode = HttpStatusCode.OK;
@@ -164,7 +162,7 @@ namespace Octokit.Caching.Tests
             var cachedResponse = Substitute.For<IResponse<string>>();
             cachedResponse.ApiInfo.Returns(new ApiInfo(new Dictionary<string, Uri>(), new List<string>(), new List<string>(), "ABC123", null));
 
-            cache.Get<IResponse<string>>("test").Returns(cachedResponse);
+            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult(cachedResponse));
 
             var conditionalResponse = Substitute.For<IResponse<string>>();
             conditionalResponse.StatusCode = HttpStatusCode.OK;
@@ -173,7 +171,7 @@ namespace Octokit.Caching.Tests
 
             await cachingClient.Send<string>(request, CancellationToken.None);
 
-            cache.Received().Set("test", conditionalResponse);
+            cache.Received().SetAsync("test", conditionalResponse);
         }
     }
 }
