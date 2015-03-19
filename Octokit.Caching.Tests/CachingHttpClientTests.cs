@@ -23,10 +23,10 @@ namespace Octokit.Caching.Tests
 
             var request = new Request { Method = HttpMethod.Post, Endpoint = new Uri("test", UriKind.Relative) };
 
-            await cachingClient.Send<string>(request, CancellationToken.None);
+            await cachingClient.Send(request, CancellationToken.None);
 
-            httpClient.Received().Send<string>(request, CancellationToken.None).IgnoreAwait();
-            cache.DidNotReceive().GetAsync<string>("test").IgnoreAwait();
+            httpClient.Received().Send(request, CancellationToken.None).IgnoreAwait();
+            cache.DidNotReceive().GetAsync<IResponse>("test").IgnoreAwait();
         }
 
         [TestMethod]
@@ -39,12 +39,12 @@ namespace Octokit.Caching.Tests
 
             var request = new Request { Method = HttpMethod.Get, Endpoint = new Uri("test", UriKind.Relative) };
 
-            var response = Substitute.For<IResponse<string>>();
-            httpClient.Send<string>(request, CancellationToken.None).Returns(Task.FromResult(response));
+            var response = Substitute.For<IResponse>();
+            httpClient.Send(request, CancellationToken.None).Returns(Task.FromResult(response));
 
-            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult((IResponse<string>)null));
+            cache.GetAsync<IResponse>("test").Returns(Task.FromResult((IResponse)null));
 
-            var actualReponse = await cachingClient.Send<string>(request, CancellationToken.None);
+            var actualReponse = await cachingClient.Send(request, CancellationToken.None);
 
             cache.Received().SetAsync("test", response).IgnoreAwait();
 
@@ -61,16 +61,16 @@ namespace Octokit.Caching.Tests
 
             var request = new Request { Method = HttpMethod.Get, Endpoint = new Uri("test", UriKind.Relative) };
 
-            var cachedResponse = Substitute.For<IResponse<string>>();
+            var cachedResponse = Substitute.For<IResponse>();
             cachedResponse.ApiInfo.Returns(new ApiInfo(new Dictionary<string, Uri>(), new List<string>(), new List<string>(), String.Empty, null));
 
-            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult(cachedResponse));
+            cache.GetAsync<IResponse>("test").Returns(Task.FromResult(cachedResponse));
 
-            var response = Substitute.For<IResponse<string>>();
+            var response = Substitute.For<IResponse>();
 
-            httpClient.Send<string>(request, CancellationToken.None).Returns(Task.FromResult(response));
+            httpClient.Send(request, CancellationToken.None).Returns(Task.FromResult(response));
 
-            var actualReponse = await cachingClient.Send<string>(request, CancellationToken.None);
+            var actualReponse = await cachingClient.Send(request, CancellationToken.None);
 
             cache.Received().SetAsync("test", response).IgnoreAwait();
 
@@ -87,14 +87,14 @@ namespace Octokit.Caching.Tests
 
             var request = new Request { Method = HttpMethod.Get, Endpoint = new Uri("test", UriKind.Relative) };
 
-            var cachedResponse = Substitute.For<IResponse<string>>();
+            var cachedResponse = Substitute.For<IResponse>();
             cachedResponse.ApiInfo.Returns(new ApiInfo(new Dictionary<string, Uri>(), new List<string>(), new List<string>(), "ABC123", null));
 
-            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult(cachedResponse));
+            cache.GetAsync<IResponse>("test").Returns(Task.FromResult(cachedResponse));
 
-            await cachingClient.Send<string>(request, CancellationToken.None);
+            await cachingClient.Send(request, CancellationToken.None);
 
-            httpClient.Received().Send<string>(request, CancellationToken.None).IgnoreAwait();
+            httpClient.Received().Send(request, CancellationToken.None).IgnoreAwait();
 
             Assert.AreEqual("ABC123", request.Headers["If-None-Match"]);
         }
@@ -109,17 +109,17 @@ namespace Octokit.Caching.Tests
 
             var request = new Request { Method = HttpMethod.Get, Endpoint = new Uri("test", UriKind.Relative) };
 
-            var cachedResponse = Substitute.For<IResponse<string>>();
+            var cachedResponse = Substitute.For<IResponse>();
             cachedResponse.ApiInfo.Returns(new ApiInfo(new Dictionary<string, Uri>(), new List<string>(), new List<string>(), "ABC123", null));
 
-            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult(cachedResponse));
+            cache.GetAsync<IResponse>("test").Returns(Task.FromResult(cachedResponse));
 
-            var conditionalResponse = Substitute.For<IResponse<string>>();
-            conditionalResponse.StatusCode = HttpStatusCode.NotModified;
+            var conditionalResponse = Substitute.For<IResponse>();
+            conditionalResponse.StatusCode.Returns(HttpStatusCode.NotModified);
 
-            httpClient.Send<string>(request, CancellationToken.None).Returns(Task.FromResult(conditionalResponse));
+            httpClient.Send(request, CancellationToken.None).Returns(Task.FromResult(conditionalResponse));
 
-            var actualResponse = await cachingClient.Send<string>(request, CancellationToken.None);
+            var actualResponse = await cachingClient.Send(request, CancellationToken.None);
 
             Assert.AreEqual(cachedResponse, actualResponse);
         }
@@ -134,17 +134,17 @@ namespace Octokit.Caching.Tests
 
             var request = new Request { Method = HttpMethod.Get, Endpoint = new Uri("test", UriKind.Relative) };
 
-            var cachedResponse = Substitute.For<IResponse<string>>();
+            var cachedResponse = Substitute.For<IResponse>();
             cachedResponse.ApiInfo.Returns(new ApiInfo(new Dictionary<string, Uri>(), new List<string>(), new List<string>(), "ABC123", null));
 
-            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult(cachedResponse));
+            cache.GetAsync<IResponse>("test").Returns(Task.FromResult(cachedResponse));
 
-            var conditionalResponse = Substitute.For<IResponse<string>>();
-            conditionalResponse.StatusCode = HttpStatusCode.OK;
+            var conditionalResponse = Substitute.For<IResponse>();
+            conditionalResponse.StatusCode.Returns(HttpStatusCode.OK);
 
-            httpClient.Send<string>(request, CancellationToken.None).Returns(Task.FromResult(conditionalResponse));
+            httpClient.Send(request, CancellationToken.None).Returns(Task.FromResult(conditionalResponse));
 
-            var actualResponse = await cachingClient.Send<string>(request, CancellationToken.None);
+            var actualResponse = await cachingClient.Send(request, CancellationToken.None);
 
             Assert.AreEqual(conditionalResponse, actualResponse);
         }
@@ -159,19 +159,19 @@ namespace Octokit.Caching.Tests
 
             var request = new Request { Method = HttpMethod.Get, Endpoint = new Uri("test", UriKind.Relative) };
 
-            var cachedResponse = Substitute.For<IResponse<string>>();
+            var cachedResponse = Substitute.For<IResponse>();
             cachedResponse.ApiInfo.Returns(new ApiInfo(new Dictionary<string, Uri>(), new List<string>(), new List<string>(), "ABC123", null));
 
-            cache.GetAsync<IResponse<string>>("test").Returns(Task.FromResult(cachedResponse));
+            cache.GetAsync<IResponse>("test").Returns(Task.FromResult(cachedResponse));
 
-            var conditionalResponse = Substitute.For<IResponse<string>>();
-            conditionalResponse.StatusCode = HttpStatusCode.OK;
+            var conditionalResponse = Substitute.For<IResponse>();
+            conditionalResponse.StatusCode.Returns(HttpStatusCode.OK);
 
-            httpClient.Send<string>(request, CancellationToken.None).Returns(Task.FromResult(conditionalResponse));
+            httpClient.Send(request, CancellationToken.None).Returns(Task.FromResult(conditionalResponse));
 
-            await cachingClient.Send<string>(request, CancellationToken.None);
+            await cachingClient.Send(request, CancellationToken.None);
 
-            cache.Received().SetAsync("test", conditionalResponse);
+            cache.Received().SetAsync("test", conditionalResponse).IgnoreAwait();
         }
     }
 }

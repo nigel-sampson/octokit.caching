@@ -18,18 +18,18 @@ namespace Octokit.Caching
             this.cache = cache;
         }
 
-        public async Task<IResponse<T>> Send<T>(IRequest request, CancellationToken cancellationToken)
+        public async Task<IResponse> Send(IRequest request, CancellationToken cancellationToken)
         {
             if (request.Method != HttpMethod.Get)
-                return await httpClient.Send<T>(request, cancellationToken);
+                return await httpClient.Send(request, cancellationToken);
 
             var key = request.Endpoint.ToString();
 
-            var response = await cache.GetAsync<IResponse<T>>(key);
+            var response = await cache.GetAsync<IResponse>(key);
 
             if (response == null)
             {
-                response = await httpClient.Send<T>(request, cancellationToken);
+                response = await httpClient.Send(request, cancellationToken);
 
                 await cache.SetAsync(key, response);
 
@@ -38,9 +38,9 @@ namespace Octokit.Caching
 
             if (!String.IsNullOrEmpty(response.ApiInfo.Etag))
             {
-                request.Headers["If-None-Match"] = String.Format("{0}", response.ApiInfo.Etag);
+                request.Headers["If-None-Match"] = response.ApiInfo.Etag;
 
-                var conditionalResponse = await httpClient.Send<T>(request, cancellationToken);
+                var conditionalResponse = await httpClient.Send(request, cancellationToken);
 
                 if (conditionalResponse.StatusCode == HttpStatusCode.NotModified)
                     return response;
@@ -50,7 +50,7 @@ namespace Octokit.Caching
                 return conditionalResponse;
             }
 
-            response = await httpClient.Send<T>(request, cancellationToken);
+            response = await httpClient.Send(request, cancellationToken);
 
             await cache.SetAsync(key, response);
 
