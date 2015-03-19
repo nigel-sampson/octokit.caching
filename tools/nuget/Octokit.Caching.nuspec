@@ -2,19 +2,19 @@
 <package >
   <metadata>
     <id>Octokit.Caching</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <authors>Nigel Sampson</authors>
     <owners>Nigel Sampson</owners>
     <licenseUrl>https://github.com/nigel-sampson/octokit.caching/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/nigel-sampson/octokit.caching</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A caching HttpClient for Octokit that respects etags.</description>
-    <releaseNotes>Initial release.</releaseNotes>
+    <releaseNotes>Update to new Octokit.</releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>Octokit, GitHub, Caching</tags>
 
     <dependencies>
-      <dependency id="Octokit" version="0.3.5" />
+      <dependency id="Octokit" version="0.8.0" />
     </dependencies>
 
   </metadata>
