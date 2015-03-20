@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Octokit.Caching</id>
-    <version>1.0.4</version>
+    <version>1.0.6</version>
     <authors>Nigel Sampson</authors>
     <owners>Nigel Sampson</owners>
     <licenseUrl>https://github.com/nigel-sampson/octokit.caching/blob/master/LICENSE</licenseUrl>
@@ -20,7 +20,7 @@
   </metadata>
 
   <files>
-    <file src="..\..\Octokit.Caching\bin\Release\Net45\Octokit.Caching.dll" target="lib\net45\Ocotokit.Caching.dll" />
-    <file src="..\..\Octokit.Caching\bin\Release\NetCore45\Octokit.Caching.dll" target="lib\netcore45\Ocotokit.Caching.dll" />
+    <file src="..\..\Octokit.Caching\bin\Release\Net45\Octokit.Caching.dll" target="lib\net45\Octokit.Caching.dll" />
+    <file src="..\..\Octokit.Caching\bin\Release\NetCore45\Octokit.Caching.dll" target="lib\netcore45\Octokit.Caching.dll" />
   </files>
 </package>
