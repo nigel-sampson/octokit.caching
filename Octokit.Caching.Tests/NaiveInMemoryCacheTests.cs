@@ -1,13 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Threading.Tasks;
+using Xunit;
 
 namespace Octokit.Caching.Tests
 {
-    [TestClass]
     public class NaiveInMemoryCacheTests
     {
-        [TestMethod]
+        [Fact]
         public async Task GetReturnsDefaultWhenMissing()
         {
             var cache = new NaiveInMemoryCache();
@@ -15,11 +13,11 @@ namespace Octokit.Caching.Tests
             var stringValue = await cache.GetAsync<string>("string");
             var intValue = await cache.GetAsync<int>("int");
 
-            Assert.IsNull(stringValue);
-            Assert.AreEqual(0, intValue);
+            Assert.Null(stringValue);
+            Assert.Equal(0, intValue);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task SetStoresValue()
         {
             var cache = new NaiveInMemoryCache();
@@ -28,10 +26,10 @@ namespace Octokit.Caching.Tests
 
             var stringValue = await cache.GetAsync<string>("string");
 
-            Assert.AreEqual("test", stringValue);
+            Assert.Equal("test", stringValue);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task ClearRemovesValues()
         {
             var cache = new NaiveInMemoryCache();
@@ -42,7 +40,7 @@ namespace Octokit.Caching.Tests
 
             var stringValue = await cache.GetAsync<string>("string");
 
-            Assert.IsNull(stringValue);
+            Assert.Null(stringValue);
         }
     }
 }
