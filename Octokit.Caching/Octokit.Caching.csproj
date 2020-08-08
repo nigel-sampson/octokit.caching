@@ -2,10 +2,9 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
 
-        <PackageId>Octokit.Caching.NETStandard</PackageId>
         <Version>1.1.0</Version>
-        <Description>A caching HttpClient for Octokit that respects etags. Forked to support netstandard</Description>
-        <RepositoryUrl>https://github.com/js6pak/octokit.caching</RepositoryUrl>
+        <Description>A caching HttpClient for Octokit that respects etags.</Description>
+        <RepositoryUrl>https://github.com/nigel-sampson/octokit.caching</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageTags>Octokit, GitHub, Caching</PackageTags>
