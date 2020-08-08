@@ -9,10 +9,8 @@ There is an overload of the `GitHubClient` constructor that takes an `IConnectio
 ``` csharp
 var connection = new Connection(
 	new ProductHeaderValue("Ocotokit.Caching.Tests", "1.0.0"),
-	GitHubClient.GitHubApiUrl,
-	new InMemoryCredentialStore(new Credentials("token")),
-	new CachingHttpClient(new HttpClientAdapter(), new NaiveInMemoryCache()),
-	new SimpleJsonSerializer());
+	new CachingHttpClient(new HttpClientAdapter(HttpMessageHandlerFactory.CreateDefault), new NaiveInMemoryCache()
+);
 
 var client = new GitHubClient(connection);
 ```
